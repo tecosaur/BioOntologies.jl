@@ -1,0 +1,111 @@
+data_config_version = 0
+uuid = "b083d5bc-0763-4151-b0cc-cdb4f8c629bd"
+name = "BioOntologies"
+plugins = ["defaults", "memorise", "loadcache"]
+
+[config.defaults]
+memorise = true
+
+    [config.defaults.storage.web]
+    cache = true
+    cachefolder = "data/downloads"
+    checksum = "auto"
+
+    [config.defaults.loader._]
+    cache = true
+    loadcache = "data/loadcache"
+
+[[CL]]
+uuid = "2a2ef7ea-609e-4e9b-a0fd-f73edbe62343"
+description = """
+The Cell Ontology is designed as a structured controlled vocabulary for cell
+types. This ontology was constructed for use by the model organism and other
+bioinformatics databases, where there is a need for a controlled vocabulary of
+cell types. This ontology is not organism specific. It covers cell types from
+prokaryotes to mammals. However, it excludes plant cell types, which are covered
+by PO."""
+doi = "10.1186/s13326-016-0088-7"
+
+    [[CL.storage]]
+    driver = "web"
+    checksum = 2940327091
+    url = "https://github.com/obophenotype/cell-ontology/raw/v2022-12-15/cl-base.json"
+
+    [[CL.loader]]
+    driver = "julia"
+    function = "obofromjson"
+    input = "IO"
+    type = "Main.OboGraph"
+
+        [CL.loader.arguments]
+        name = "Cell Ontology"
+        description = "A structured controlled vocabulary for cell types."
+        id = "CL"
+
+[[GO]]
+uuid = "a01934f0-ee34-4000-872d-5d3ba76dd977"
+doi = "10.1093/nar/gkaa1113"
+
+    [[GO.storage]]
+    driver = "web"
+    checksum = 764937185
+    url = "http://release.geneontology.org/2023-01-01/ontology/go.json"
+
+    [[GO.loader]]
+    driver = "julia"
+    function = "obofromjson"
+    input = "IO"
+    type = "Main.OboGraph"
+
+        [GO.loader.arguments]
+        name = "Gene Ontology"
+        description = "A structured controlled vocabulary for cell types."
+        id = "GL"
+
+[[HP]]
+uuid = "4c7a4da8-7170-49cf-88ae-0d5abc69f78f"
+description = """
+Human Phenotype Ontology
+
+The Human Phenotype Ontology (HPO) project provides an ontology of medically
+relevant phenotypes, disease-phenotype annotations, and the algorithms that
+operate on these. The HPO can be used to support differential diagnostics,
+translational research, and a number of applications in computational biology
+by providing the means to compute over the clinical phenotype. The HPO is being
+used for computational deep phenotyping and precision medicine as well as
+integration of clinical data into translational research. Deep phenotyping can
+be defined as the precise and comprehensive analysis of phenotypic
+abnormalities in which the individual components of the phenotype are observed
+and described. The HPO is being increasingly adopted as a standard for
+phenotypic abnormalities by diverse groups such as international rare disease
+organizations, registries, clinical labs, biomedical resources, and clinical
+software tools and will thereby contribute toward nascent efforts at global
+data exchange for identifying disease etiologies (Köhler et al, 2017).
+
+The HPO currently contains over 13,000 terms arranged in a directed acyclic
+graph and are connected by is-a (subclass-of) edges, such that a term represents
+a more specific or limited instance of its parent term(s). All relationships in
+the HPO are is-a relationships, i.e. simple class-subclass relationships. For
+instance, Abnormal lens morphology is-a Abnormal eye morphology. The
+relationships are transitive, meaning that they are inherited up all paths to
+the root. Phenotypic abnormality is the main subontology of the HPO and contains
+descriptions of clinical abnormalities. Additional subontologies are provided to
+describe inheritance patterns, onset/clinical course and modifiers of
+abnormalities."""
+doi = "10.1093/nar/gkaa1043"
+
+    [[HP.storage]]
+    driver = "web"
+    checksum = 3560990680
+    url = "https://github.com/obophenotype/human-phenotype-ontology/raw/v2022-02-14/hp.json"
+
+    [[HP.loader]]
+    driver = "julia"
+    function = "obofromjson"
+    input = "IO"
+    type = "Main.OboGraph"
+
+        [HP.loader.arguments]
+        name = "Human Phenotype Ontology"
+        description = "A structured and controlled vocabulary for the phenotypic features encountered in human hereditary and other disease."
+        id = "HP"

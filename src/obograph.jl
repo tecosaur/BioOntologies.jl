@@ -24,8 +24,12 @@ function Base.parse(::Type{OboId}, id::AbstractString)
     end
 end
 
-Base.string(id::OboId{type}) where {type} =
-    string(type, ':', string(id.val))
+obopad(::Type{<:OboId}) = (0, ' ')
+
+function Base.string(id::OboId{type}) where {type}
+    padw, padchr = obopad(typeof(id))
+    string(type, ':', lpad(string(id.val), padw, padchr))
+end
 
 function Base.show(io::IO, ::MIME"text/plain", id::OboId{type}) where {type}
     if get(io, :compact, false)
@@ -100,12 +104,12 @@ struct OboInfo
     description::String
 end
 
-const OboGraph = MetaDiGraph{Int, OboId, SimpleDiGraph{Int}, OboTerm, Symbol, OboInfo, Returns{Int}, Int}
+const OboGraph = MetaGraph{Int64, SimpleDiGraph{Int64}, OboId, OboTerm, Symbol, OboInfo, Returns{Int64}, Int64}
 
 OboGraph(id::Symbol, name::String="", description::String="") =
-    MetaGraph(DiGraph{Int}(), Label = OboId, VertexData = OboTerm, EdgeData = Symbol,
-              graph_data = OboInfo(id, name, description), weight_function = Returns(1),
-              default_weight = 1)
+    MetaGraph(DiGraph{Int}(), label_type = OboId, vertex_data_type = OboTerm,
+              edge_data_type = Symbol, graph_data = OboInfo(id, name, description),
+              weight_function = Returns(1), default_weight = 1)
 
 Base.show(io::IO, ::MIME"text/plain", og::OboGraph) =
     print(io, "OboGraph{", og.graph_data.id, "}(", nv(og), " terms and ", ne(og), " edges)")
@@ -113,6 +117,7 @@ Base.show(io::IO, ::MIME"text/plain", og::OboGraph) =
 """
     grow(g::OboGraph, vertices::Vector{Int}, dist::Number=Inf; dir::Symbol=:in)
     grow(g::OboGraph, vertices::Vector{<:OboId}, dist::Number=Inf; dir::Symbol=:in)
+
 Grow a subgraph of `g` by obtaining the `neighborhod` (up to `dist` edges away,
 in the direction `dir`) of each vertex of `vertices` (either an index, or an
 `OboId`) and forming an induced subgraph.
@@ -126,3 +131,6 @@ grow(g::OboGraph, ids::Vector{<:OboId}, dist::Number=Inf; dir::Symbol=:in) =
 
 grow(g::OboGraph, id::Union{<:OboId, Int}, dist::Number=Inf; dir::Symbol=:in) =
     grow(g, [id], dist; dir)
+
+grow(g::OboGraph, subg::OboGraph, dist::Number=Inf; dir::Symbol=:in) =
+    grow(g, collect(labels(subg)), dist; dir)

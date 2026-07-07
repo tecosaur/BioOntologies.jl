@@ -13,6 +13,9 @@ include("obofromjson.jl")
 
 export OboGraph, OboTerm, OboId, grow
 
+obopad(::Type{<:OboId{:HP}}) = (9, '0')
+obopad(::Type{<:OboId{:CL}}) = (7, '0')
+
 function __init__()
     DataToolkit.init(@__MODULE__, force=true)
     DataToolkit.@addpkgs JSON3

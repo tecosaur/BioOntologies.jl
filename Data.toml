@@ -1,23 +1,19 @@
 data_config_version = 0
 uuid = "b083d5bc-0763-4151-b0cc-cdb4f8c629bd"
 name = "BioOntologies"
-plugins = ["defaults", "memorise", "loadcache"]
+plugins = ["cache", "defaults", "memorise", "store"]
 
 [config.defaults]
 memorise = true
 
     [config.defaults.storage.web]
-    cache = true
-    cachefolder = "data/downloads"
     checksum = "auto"
-
-    [config.defaults.loader._]
-    cache = true
-    loadcache = "data/loadcache"
 
 [[CL]]
 uuid = "2a2ef7ea-609e-4e9b-a0fd-f73edbe62343"
 description = """
+Cell Ontology
+
 The Cell Ontology is designed as a structured controlled vocabulary for cell
 types. This ontology was constructed for use by the model organism and other
 bioinformatics databases, where there is a need for a controlled vocabulary of
@@ -28,8 +24,8 @@ doi = "10.1186/s13326-016-0088-7"
 
     [[CL.storage]]
     driver = "web"
-    checksum = 2940327091
-    url = "https://github.com/obophenotype/cell-ontology/raw/v2022-12-15/cl-base.json"
+    checksum = "k12:e1ed050f761a499b0ec21740ca9d2947"
+    url = "https://github.com/obophenotype/cell-ontology/releases/download/v2025-04-10/cl-base.json"
 
     [[CL.loader]]
     driver = "julia"
@@ -44,11 +40,59 @@ doi = "10.1186/s13326-016-0088-7"
 
 [[GO]]
 uuid = "a01934f0-ee34-4000-872d-5d3ba76dd977"
+description = '''
+Gene Ontology
+
+The Gene Ontology (GO) describes our knowledge of the biological domain with
+respect to three aspects:
+
+**Molecular Function**
+
+Molecular-level activities performed by gene products. Molecular function terms
+describe activities that occur at the molecular level, such as "catalysis" or
+"transport". GO molecular function terms represent activities rather than the
+entities (molecules or complexes) that perform the actions, and do not specify
+where, when, or in what context the action takes place. Molecular functions
+generally correspond to activities that can be performed by individual gene
+products (i.e. a protein or RNA), but some activities are performed by molecular
+complexes composed of multiple gene products. Examples of broad functional terms
+are *catalytic activity* and *transporter activity*; examples of narrower
+functional terms are *adenylate cyclase activity* or *Toll-like receptor binding*.
+To avoid confusion between gene product names and their molecular functions, GO
+molecular functions are often appended with the word "activity" (a *protein
+kinase* would have the GO molecular function *protein kinase activity*).
+
+**Cellular Component**
+
+The locations relative to cellular structures in which a gene product performs a
+function, either cellular compartments (e.g., *mitochondrion*), or stable
+macromolecular complexes of which they are parts (e.g., the *ribosome*). Unlike
+the other aspects of GO, cellular component classes refer not to processes but
+rather a cellular anatomy.
+
+**Biological Process**
+
+The larger processes, or 'biological programs' accomplished by multiple
+molecular activities. Examples of broad biological process terms are *DNA repair*
+or *signal transduction*. Examples of more specific terms are *pyrimidine
+nucleobase biosynthetic process* or *glucose transmembrane transport. Note that a
+biological process is not equivalent to a pathway. At present, the GO does not
+try to represent the dynamics or dependencies that would be required to fully
+describe a pathway.
+
+In an example of GO annotation, human "cytochrome c" can be described by the
+**molecular function** *oxidoreductase activity*, the **biological process** *oxidative
+phosphorylation*, and the **cellular component** *mitochondrial intermembrane space*.
+
+The GO vocabulary is designed to be species-agnostic, and includes terms
+applicable to prokaryotes and eukaryotes, as well as single and multicellular
+organisms
+'''
 doi = "10.1093/nar/gkaa1113"
 
     [[GO.storage]]
     driver = "web"
-    checksum = 764937185
+    checksum = "k12:eba33b7da7216d84e6960b942e0e810c"
     url = "http://release.geneontology.org/2023-01-01/ontology/go.json"
 
     [[GO.loader]]
@@ -60,7 +104,7 @@ doi = "10.1093/nar/gkaa1113"
         [GO.loader.arguments]
         name = "Gene Ontology"
         description = "A structured controlled vocabulary for cell types."
-        id = "GL"
+        id = "GO"
 
 [[HP]]
 uuid = "4c7a4da8-7170-49cf-88ae-0d5abc69f78f"
@@ -96,7 +140,7 @@ doi = "10.1093/nar/gkaa1043"
 
     [[HP.storage]]
     driver = "web"
-    checksum = 3560990680
+    checksum = "k12:98f088c3d47580bc80cc3ac896fee4c5"
     url = "https://github.com/obophenotype/human-phenotype-ontology/raw/v2022-02-14/hp.json"
 
     [[HP.loader]]
@@ -109,3 +153,56 @@ doi = "10.1093/nar/gkaa1043"
         name = "Human Phenotype Ontology"
         description = "A structured and controlled vocabulary for the phenotypic features encountered in human hereditary and other disease."
         id = "HP"
+
+[[Mondo]]
+uuid = "888ec946-5e43-418c-aff7-a5e9bd308ead"
+description = """
+The Mondo Disease Ontology (Mondo) aims to harmonize disease definitions across
+the world. The name Mondo comes from the Latin word ‘mundus’ and means ‘for the
+world.’
+
+Numerous sources for disease definitions and data models currently exist, which
+include HPO, OMIM, SNOMED CT, ICD, PhenoDB, MedDRA, MedGen, ORDO, DO, GARD, etc;
+however, these sources partially overlap and sometimes conflict, making it
+difficult to know definitively how they relate to each other. This has resulted
+in a proliferation of mappings between disease entries in different resources;
+however mappings are problematic: collectively, they are expensive to create and
+maintain. Most importantly, the mappings lack completeness, accuracy, and
+precision; as a result, mapping calls are often inconsistent between resources.
+The UMLS provides intermediate concepts through which other resources can be
+mapped, but these mappings suffer from the same challenges: they are not
+guaranteed to be one-to-one, especially in areas with evolving disease concepts
+such as rare disease.
+
+In order to address the lack of a unified disease terminology that provides
+precise equivalences between disease concepts, Mondo was created, which provides
+a logic-based structure for unifying multiple disease resources.
+
+Mondo’s development is coordinated with the Human Phenotype Ontology (HPO),
+which describes the individual phenotypic features that constitute a disease.
+Like the HPO, Mondo provides a hierarchical structure which can be used for
+classification or “rolling up” diseases to higher level groupings. It provides
+mappings to other disease resources, but in contrast to other mappings between
+ontologies, we precisely annotate each mapping using strict semantics, so that
+we know when two disease names or identifiers are equivalent or one-to-one, in
+contrast to simply being closely related."""
+creator = "Monarch Initiative"
+date = "2025-05-06"
+doi = "10.1101/2022.04.13.22273750"
+license = "CC-BY 4.0"
+webpage = "https://mondo.monarchinitiative.org"
+
+    [[Mondo.storage]]
+    driver = "web"
+    url = "https://github.com/monarch-initiative/mondo/releases/download/v2025-05-06/mondo.json"
+
+    [[Mondo.loader]]
+    driver = "julia"
+    function = "obofromjson"
+    input = "IO"
+    type = "Main.OboGraph"
+
+        [Mondo.loader.arguments]
+        name = "Mondo Disease Ontology "
+        description = "Harmonised disease definitions with strict semantics."
+        id = "MONDO"

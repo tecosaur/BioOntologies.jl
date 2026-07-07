@@ -1,5 +1,5 @@
 function obofromjson(jsonsource::IO; id::String="", name::String="", description::String="")
-    DataToolkit.@use JSON3
+    @require JSON3
     data = JSON3.read(jsonsource)
     de_url(hp_url::String) = replace(hp_url, r"^.*/([A-Za-z]+)_" => s"\1:")
     graph = OboGraph(Symbol(id), name, description)
@@ -20,10 +20,10 @@ function obofromjson(jsonsource::IO; id::String="", name::String="", description
     end
     for edge in data[:graphs][1][:edges]
         from, to = parse(OboId, edge[:obj]), parse(OboId, edge[:sub])
-        if haskey(graph.vertex_properties, from) && haskey(graph.vertex_properties, to)
-            add_edge!(graph, from, to, Symbol(edge[:pred]))
-        else
+        if !haskey(graph.vertex_properties, from) || !haskey(graph.vertex_properties, to)
             @warn "Could not apply edge $edge"
+        elseif !haskey(graph.edge_data, (from, to))
+            add_edge!(graph, from, to, Symbol(edge[:pred]))
         end
     end
     graph

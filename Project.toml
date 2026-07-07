@@ -4,23 +4,42 @@ authors = ["TEC <git@tecosaur.net>"]
 version = "0.1.0"
 
 [deps]
+BaseDirs = "18cc8868-cbac-4acf-b575-c8ff214dc66f"
 DataToolkit = "dc83c90b-d41d-4e55-bdb7-0fc919659999"
+DataToolkitBase = "e209d0c3-e863-446f-9b45-de6ca9730756"
+DataToolkitCommon = "9e6fccbf-6142-406a-aa4c-75c1ae647f53"
+DataToolkitCore = "caac3e55-418c-402e-a061-64d454aa8f4f"
+DataToolkitREPL = "c58528a0-97a2-40a0-9a44-056fe1196995"
+DataToolkitStore = "082ec3c2-3fb3-458f-ad22-5e5e31d4377a"
 Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
 JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+KangarooTwelve = "2a5dabf5-6a39-42aa-818d-ce8a58d1b312"
 MetaGraphsNext = "fa8bd995-216d-47f1-8a91-f3b68fbeb377"
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"
-
-[compat]
-julia = "1.6"
-DataToolkit = "0.2"
-JSON3 = "1"
-MetaGraphsNext = "0.4"
-Requires = "1"
-
-[extensions]
-PlotExt = ["Makie", "GraphMakie"]
 
 [weakdeps]
 GraphMakie = "1ecd5474-83a3-4783-bb4f-06765db800d2"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+
+[sources]
+DataToolkit = {subdir = "Main", url = "https://github.com/tecosaur/DataToolkit.jl.git", rev="main"}
+DataToolkitBase = {subdir = "Base", url = "https://github.com/tecosaur/DataToolkit.jl.git", rev="main"}
+DataToolkitCommon = {subdir = "Common", url = "https://github.com/tecosaur/DataToolkit.jl.git", rev="main"}
+DataToolkitCore = {subdir = "Core", url = "https://github.com/tecosaur/DataToolkit.jl.git", rev="main"}
+DataToolkitREPL = {subdir = "REPL", url = "https://github.com/tecosaur/DataToolkit.jl.git", rev="main"}
+DataToolkitStore = {subdir = "Store", url = "https://github.com/tecosaur/DataToolkit.jl.git", rev="main"}
+
+[extensions]
+PlotExt = ["Makie", "GraphMakie"]
+
+[compat]
+BaseDirs = "1.2.4"
+DataToolkit = "0.6 - 0.10"
+DataToolkitBase = "0.6 - 0.10"
+DataToolkitCommon = "0.6 - 0.10"
+JSON3 = "1"
+KangarooTwelve = "1.0.0"
+MetaGraphsNext = "0.4 - 0.7"
+Requires = "1"
+julia = "1.6"
